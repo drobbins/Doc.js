@@ -44,54 +44,72 @@ describe("doc.js", function(){
     expect(Doc).toBeAObject();
   });
 
+  it("should allow creation of stores", function(){
+    var docstore;
+    expect(Doc.Store).toBeAFunction();
+    docstore = new Doc.Store();
+    expect(docstore).toBeAObject();
+  });
+
   describe("Storing documents in Doc", function(){
 
-    var testDoc;
+    var testDoc, store;
 
     beforeEach(function(){
       testDoc = { id : "123456789", name : "David", age : 28};
-      Doc.dump();
+      store = new Doc.Store();
     });
 
-    describe("Doc CRUD API", function(){
-      it("should expose doc.save()", function(){
-        expect(Doc.save).toBeAFunction();
+    describe("store CRUD API", function(){
+      it("should expose save()", function(){
+        expect(store.save).toBeAFunction();
       });
-      it("should expose doc.open()", function(){
-        expect(Doc.open).toBeAFunction();
+      it("should expose open()", function(){
+        expect(store.open).toBeAFunction();
       });
-      it("should expose doc.remove()", function(){
-        expect(Doc.remove).toBeAFunction();
+      it("should expose remove()", function(){
+        expect(store.remove).toBeAFunction();
+      });
+      it("should expose unremove()", function(){
+        expect(store.unremove).toBeAFunction();
       });
     });
 
     it("should allow the storage and retrieval of a test document", function(){
       var openedDoc = {};
-      Doc.save(testDoc);
-      openedDoc = Doc.open(testDoc.id);
+      store.save(testDoc);
+      openedDoc = store.open(testDoc.id);
       expect(JSON.stringify(testDoc)).toBe(JSON.stringify(openedDoc));
     });
 
     it("should return the current revision number of a document when saved", function(){
-      var rev = Doc.save(testDoc);
+      var rev = store.save(testDoc);
       expect(rev).toBe(1);
-      rev = Doc.save(testDoc);
+      rev = store.save(testDoc);
       expect(rev).toBe(2);
     });
 
     it("should allow deletion of documents", function(){
-      Doc.save(testDoc);
-      Doc.remove(testDoc.id);
-      expect(JSON.stringify(Doc.open(testDoc.id))).toBe(JSON.stringify({deleted:true, lastRev:1}));
+      store.save(testDoc);
+      store.remove(testDoc.id);
+      expect(JSON.stringify(store.open(testDoc.id))).toBe(JSON.stringify({deleted:true, lastRev:1}));
+    });
+
+    it("should allow undeletion of documents", function(){
+      var rev = store.save(testDoc);
+      store.remove(testDoc.id);
+      store.unremove(testDoc.id);
+      testDoc.rev = rev;
+      expect(JSON.stringify(store.open(testDoc.id))).toBe(JSON.stringify(testDoc));
     });
 
     it("should allow retrieval of a particular version of a doc", function(){
       var id = testDoc.id;
-      Doc.save(testDoc);
+      store.save(testDoc);
       testDoc.name = "Fred";
-      Doc.save(testDoc);
-      expect(Doc.open(id, 1).name).toBe("David");
-      expect(Doc.open(id, 2).name).toBe("Fred");
+      store.save(testDoc);
+      expect(store.open(id, 1).name).toBe("David");
+      expect(store.open(id, 2).name).toBe("Fred");
     });
 
 
