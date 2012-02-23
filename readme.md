@@ -5,6 +5,8 @@ Document storage and processing via map-reduce.
 * Documents here means JSON objects with a required id and revision field.
 
 ## Usage
+See the tests in `test/spec/docSpec.js` for more complete examples.
+
 * Include this script
 * Create a new store:
 
