@@ -51,6 +51,11 @@ describe("doc.js", function(){
     expect(docstore).toBeAObject();
   });
 
+  it("should allow creation of named stores", function(){
+    var docstore = new Doc.Store({name:"test"});
+    expect(docstore.name).toBe("test");
+  });
+
   xit("should provide a clone-function function", function(){
     var original = function(a,b){return a+b*a;},
         a = 5,
