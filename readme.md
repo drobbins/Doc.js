@@ -52,11 +52,11 @@ var store = new Doc.Store({backend = new Doc.RiakBackend()});
 
 Included backends:
 
-* Doc.DefaultBackend() (not persisted)
-* Doc.RiakBackend() (TBI)
-* Doc.CouchBackend() (TBI)
-* Doc.DynamoBackend() (TBI)
-* Doc.LocalStoreBackend() (TBI)
+* Doc.DefaultBackend (not persisted)
+* Doc.RiakBackend (TBI)
+* Doc.CouchBackend (TBI)
+* Doc.DynamoBackend (TBI)
+* Doc.LocalStoreBackend (TBI)
 
 You can also create your own:
 
@@ -70,7 +70,8 @@ var store = new Doc.Store(myBackend);
 ```
 
 Doc expects your backend to implement:
+
 * save(doc)
 * open(id)
 * remove(id)
-* ...
+* WIP
