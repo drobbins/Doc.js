@@ -42,3 +42,35 @@ var map = function(doc){
       };
 store.saveView({id : "wordCount", map : map, reduce : reduce});
 ```
+
+## Persistence (WIP)
+Doc offers a variety of persistence mechanisms, and can be readily extended to include your own. When a doc store is created, it can be passed a Doc.Backend object.
+
+```
+var store = new Doc.Store({backend = new Doc.RiakBackend()});
+```
+
+Included backends:
+
+* Doc.DefaultBackend() (not persisted)
+* Doc.RiakBackend() (TBI)
+* Doc.CouchBackend() (TBI)
+* Doc.DynamoBackend() (TBI)
+* Doc.LocalStoreBackend() (TBI)
+
+You can also create your own:
+
+```
+var myBackend = new Doc.Backend({
+  save : function(doc){...},
+  open : function(doc){...}
+  ...
+});
+var store = new Doc.Store(myBackend);
+```
+
+Doc expects your backend to implement:
+* save(doc)
+* open(id)
+* remove(id)
+* ...
