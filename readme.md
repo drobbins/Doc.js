@@ -63,7 +63,7 @@ You can also create your own:
 ```
 var myBackend = new Doc.Backend({
   save : function(doc){...},
-  open : function(doc){...}
+  open : function(id){...}
   ...
 });
 var store = new Doc.Store(myBackend);
