@@ -68,7 +68,7 @@ describe("doc.js", function(){
         DefaultBackend : null,
         RiakBackend : new Doc.RiakBackend({
             bucket_name : "doctest",
-            url : "http://localhost:8091/riak"
+            url : "http://localhost:1337/?url=http://localhost:8091/riak/"
         })
       },
       backendName;

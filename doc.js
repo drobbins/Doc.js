@@ -16,6 +16,14 @@
   Doc._cloneFunction = function _clone(original){
     return original.bind({});
   };
+  Doc._ajax = function _ajax(url, settings){
+    try {
+      $.ajax(url, settings);
+    }
+    catch (e){
+      throw "jQuery required for AJAX based backends";
+    }
+  };
 
   // Container for docs
   Doc._docs = {};
@@ -140,8 +148,38 @@
   Doc.RiakBackend = function RiakBackend(options){
     var opt = options || {};
     extend(this, {
+
+      // Properties
       bucket : opt.bucket_name || opt.name || "DocStore",
-      url : opt.url;
+      url : opt.url,
+
+      // Methods
+      save : function save(doc, callback){
+        var rev;
+        Doc._ajax(this.url + this.bucket, {
+          type : "POST",
+          data : JSON.stringify(doc),
+          contentType : "application/json",
+          success : function(response){
+            debugger;
+            if (callback && typeof callback === "function"){
+              callback(response);
+            }
+            else{
+              rev = response;
+              return rev;
+            }
+          }
+        });
+      },
+      open : function open(){},
+      remove : function remove(){},
+      removeAll : function removeAll(){},
+      unremove : function unremove(){},
+      dump : function dump(){},
+      count : function count(){},
+      countAll : function countAll(){},
+      countDeleted : function countDeleted(){}
     });
   };
 
